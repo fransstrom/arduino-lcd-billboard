@@ -1,5 +1,5 @@
+#include "billboard.h"
 #include <avr/io.h>
-
 #define LCD_PORT PORTD
 #define LCD_DDR DDRD
 
@@ -87,3 +87,5 @@ void lcd_printf(char *format, ...);
 
 void lcd_autoscroll_text(char *text, uint8_t row);
 void lcd_continuous_scroll(char *text, uint8_t row);
+void lcd_continuous_scroll_ad(struct Ad *ad, uint8_t row);
+void lcd_continuous_scroll_company(struct Company *company, uint8_t row);
