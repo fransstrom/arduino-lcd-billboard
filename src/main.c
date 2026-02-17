@@ -9,8 +9,8 @@ int main(void) {
   lcd_clear();
 
   struct Ad testAd;
-  testAd.ad_text = "Fucksucker";
-  testAd.company_name = "Fuckers200 AB ";
+  testAd.company_name = "Svartepetters AB ";
+  testAd.ad_text = "Bygga svart? Call Petter, 0414-30395";
   testAd.balance = 9000;
 
   lcd_continuous_scroll_ad(&testAd, 1);

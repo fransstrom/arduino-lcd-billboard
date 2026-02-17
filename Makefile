@@ -100,8 +100,6 @@ $(BIN): $(ELF)
 	$(OBJCOPY) -O ihex -R .fuse -R .lock -R .user_signatures -R .comment $< $@
 
 isp: $(BIN)
-	$(OBJISP) -F -V -c arduino -p ${MCU} -P ${PORT} -U flash:w:$
-isp: $(BIN)
 	$(OBJISP) -F -V -c arduino -p ${MCU} -P ${PORT} -U flash:w:$(BIN)
 clean:
 	@rm -rf $(BUILD)
