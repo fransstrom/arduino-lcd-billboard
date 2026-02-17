@@ -1,6 +1,5 @@
 .cache
 *.o
-*.h
 *.d
 *.hex
 *.map

@@ -231,8 +231,8 @@ void lcd_autoscroll_text(char *text, uint8_t row) {
   for (int i = 0; i < 16; i++) {
     lcd_write(text[i]);
   }
-  _delay_ms(LCD_SCROLL_DELAY * 2); // Pausa i början
 
+  _delay_ms(LCD_SCROLL_DELAY * 2); // Pausa i början
   // Skriv resterande tecken med display shift
   for (int i = 16; i < text_len; i++) {
     lcd_scroll_left();       // Shifta display
