@@ -3,30 +3,37 @@ LD := avr-ld
 OBJCOPY := avr-objcopy
 OBJISP := avrdude
 PORT := /dev/ttyACM0
-
 MCU := atmega328p
-
-CFLAGS := -Wall -Wextra  -Wundef -pedantic \
-		-Os -std=gnu99 -DF_CPU=16000000UL -mmcu=${MCU}
+CFLAGS := -Wall -Wextra -Wundef -pedantic \
+		-Os -std=gnu99 -DF_CPU=16000000UL -mmcu=${MCU} -DBAUD=9600
 LDFLAGS := -mmcu=$(MCU)
-
-BIN := program.hex
-SOURCES := main.c lcd.c
-OBJS := $(SOURCES:.c=.o)
-
+SRC := src
+BUILD := build
+ELF := $(BUILD)/program.elf
+BIN := $(BUILD)/program.hex
+SOURCES := $(SRC)/main.c $(SRC)/lcd.c $(SRC)/billboard.c $(SRC)/millis.c $(SRC)/uart.c
+OBJS := $(addprefix $(BUILD)/, $(notdir $(SOURCES:.c=.o)))
+BAUD := 9600
 all: $(BIN)
 
-%.o:%.c
-	$(COMPILE.c) -MD -o $@ $<
+$(BUILD):
+	mkdir -p $(BUILD)
 
-%.elf: $(OBJS)
-	$(CC) -Wl,-Map=$(@:.elf=.map) $(LDFLAGS) -o $@ $^
+# $(BUILD)/%.o: $(SRC)/%.c | $(BUILD)
+# 	$(CC) $(CFLAGS) -c -MD -MF $(@:.o=.d) -o $@ $
+$(BUILD)/%.o: $(SRC)/%.c | $(BUILD)
+	$(CC) $(CFLAGS) -c -MD -MF $(@:.o=.d) -o $@ $(SRC)/$*.c
+$(ELF): $(OBJS)
+	$(CC) -Wl,-Map=$(BUILD)/program.map $(LDFLAGS) -o $@ $^
 
-%.hex: %.elf
+$(BIN): $(ELF)
 	$(OBJCOPY) -O ihex -R .fuse -R .lock -R .user_signatures -R .comment $< $@
 
-isp: ${BIN}
-	$(OBJISP) -F -V -c arduino -p ${MCU} -P ${PORT} -U flash:w:$<
+isp: $(BIN)
+	$(OBJISP) -F -V -c arduino -p ${MCU} -P ${PORT} -U flash:w:$(BIN)
 
 clean:
-	@rm -f $(BIN) $(OBJS) *.map *.P *.d
+	@rm -rf $(BUILD)
+
+monitor:
+	screen $(PORT) $(BAUD)

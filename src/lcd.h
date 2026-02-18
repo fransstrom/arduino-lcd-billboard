@@ -1,12 +1,11 @@
+#include "billboard.h"
 #include <avr/io.h>
-
 #define LCD_PORT PORTD
 #define LCD_DDR DDRD
 
 #ifndef LCD_RS
-#define LCD_RS 0
-#define LCD_RW 2 // Doesn't seem to work as it should - use GND
-#define LCD_EN 1
+#define LCD_RS 2
+#define LCD_EN 3
 #define LCD_D4 4
 #define LCD_D5 5
 #define LCD_D6 6
@@ -87,3 +86,5 @@ void lcd_printf(char *format, ...);
 
 void lcd_autoscroll_text(char *text, uint8_t row);
 void lcd_continuous_scroll(char *text, uint8_t row);
+void lcd_continuous_scroll_ad(struct Ad *ad, uint8_t row);
+void lcd_continuous_scroll_company(struct Company *company, uint8_t row);

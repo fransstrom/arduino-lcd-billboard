@@ -1,5 +1,7 @@
 #include "lcd.h"
+#include "millis.h"
 #include <stdarg.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <util/delay.h>
 
@@ -281,4 +283,55 @@ void lcd_continuous_scroll(char *text, uint8_t row) {
 
     // Avbryt med knapp eller timer om du vill
   }
+}
+void lcd_continuous_scroll_ad(struct Ad *ad, uint8_t row) {
+
+  uint8_t time_in_func = 0;
+  // while (ad->company_name[company_name_len]) {
+  //   company_name_len++;
+  // }
+  // Following snippet if for having first row static and second row scrolling
+  lcd_set_cursor(0, 0);
+
+  // Visa 16 tecken från aktuell offset
+  // for (uint8_t i = 0; i < 16; i++) {
+  //   uint8_t idx = (0 + i) % company_name_len;
+  //   lcd_write(buffer[idx]);
+  // }
+
+  // Visa första 16 tecken
+  for (int i = 0; i < 16 && ad->company_name[i] != '\0'; i++) {
+    _delay_ms(100);
+    lcd_write(ad->company_name[i]);
+  }
+
+  uint8_t text_len = 0;
+  char buffer[100];
+  while (ad->ad_text[text_len]) {
+    text_len++;
+  };
+
+  // Padding för att separera start/slut
+  snprintf(buffer, sizeof(buffer), "%s    ", ad->ad_text);
+  text_len += 4;
+
+  uint8_t offset = 0;
+  while (millis_get() - time_in_func <= 10000) { // Oändlig loop!
+    lcd_set_cursor(0, row);
+
+    time_in_func = millis();
+    printf("%lu\n", millis_get() - time_in_func);
+    // Visa 16 tecken från aktuell offset
+    for (uint8_t i = 0; i < 16; i++) {
+      uint8_t idx = (offset + i) % text_len;
+      lcd_write(buffer[idx]);
+    }
+
+    offset = (offset + 1) % text_len;
+
+    // Visa 16 tecken från aktuell offset
+    _delay_ms(LCD_SCROLL_DELAY);
+    // Avbryt med knapp eller timer om du vill
+  }
+  millis_reset();
 }
