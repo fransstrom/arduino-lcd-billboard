@@ -328,5 +328,6 @@ void lcd_continuous_scroll_ad(struct Ad *ad, uint8_t row) {
     _delay_ms(LCD_SCROLL_DELAY);
 
     // Avbryt med knapp eller timer om du vill
+    printf("yooyo\n");
   }
 }

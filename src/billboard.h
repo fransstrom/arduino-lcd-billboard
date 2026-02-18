@@ -1,5 +1,6 @@
 #ifndef BILLBOARD_H
 #define BILLBOARD_H
+
 enum Animation { BLINK, SCROLL };
 struct Ad {
   char *company_name;
