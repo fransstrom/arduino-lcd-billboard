@@ -4,7 +4,6 @@
 #include "uart.h"
 #include <avr/interrupt.h>
 #include <avr/io.h>
-#include <stdio.h>
 #include <util/delay.h>
 
 int main(void) {
@@ -20,18 +19,15 @@ int main(void) {
   testAd.company_name = "Svartepetters AB ";
   testAd.ad_text = "Bygga svart? Call Petter, 0414-30395";
   testAd.balance = 9000;
+  struct Ad testAd2;
+  testAd2.company_name = "Ankas Pajer AB";
+  testAd2.ad_text = "Hurry before Manson have eaten all the pies";
+  testAd2.balance = 9000;
 
-  // while (1) {
-  //   printf("%lu\n", millis_get());
-  // }
+  // Now with millis we can wrap this in a while loop and create a function to
+  // randomize company ads.
   lcd_continuous_scroll_ad(&testAd, 1);
-  // lcd_continuous_scroll(august, 1);
-  // lcd_continuous_scroll(svartpetter, 1);
-  // while (1) {
-  //   lcd_set_cursor(0, 1);
-  //   lcd_printf("Waiting... :%d", num++);
-  //
-  //   _delay_ms(1000);
-  // }
+  lcd_clear();
+  lcd_continuous_scroll_ad(&testAd2, 1);
   return 0;
 }

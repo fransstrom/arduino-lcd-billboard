@@ -1,5 +1,7 @@
 #include "lcd.h"
+#include "millis.h"
 #include <stdarg.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <util/delay.h>
 
@@ -284,6 +286,7 @@ void lcd_continuous_scroll(char *text, uint8_t row) {
 }
 void lcd_continuous_scroll_ad(struct Ad *ad, uint8_t row) {
 
+  uint8_t time_in_func = 0;
   // while (ad->company_name[company_name_len]) {
   //   company_name_len++;
   // }
@@ -313,9 +316,11 @@ void lcd_continuous_scroll_ad(struct Ad *ad, uint8_t row) {
   text_len += 4;
 
   uint8_t offset = 0;
-  while (1) { // Oändlig loop!
+  while (millis_get() - time_in_func <= 10000) { // Oändlig loop!
     lcd_set_cursor(0, row);
 
+    time_in_func = millis();
+    printf("%lu\n", millis_get() - time_in_func);
     // Visa 16 tecken från aktuell offset
     for (uint8_t i = 0; i < 16; i++) {
       uint8_t idx = (offset + i) % text_len;
@@ -328,4 +333,5 @@ void lcd_continuous_scroll_ad(struct Ad *ad, uint8_t row) {
     _delay_ms(LCD_SCROLL_DELAY);
     // Avbryt med knapp eller timer om du vill
   }
+  millis_reset();
 }
