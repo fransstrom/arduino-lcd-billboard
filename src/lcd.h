@@ -4,9 +4,8 @@
 #define LCD_DDR DDRD
 
 #ifndef LCD_RS
-#define LCD_RS 0
-#define LCD_RW 2 // Doesn't seem to work as it should - use GND
-#define LCD_EN 1
+#define LCD_RS 2
+#define LCD_EN 3
 #define LCD_D4 4
 #define LCD_D5 5
 #define LCD_D6 6

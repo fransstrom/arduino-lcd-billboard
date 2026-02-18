@@ -326,8 +326,6 @@ void lcd_continuous_scroll_ad(struct Ad *ad, uint8_t row) {
 
     // Visa 16 tecken från aktuell offset
     _delay_ms(LCD_SCROLL_DELAY);
-
     // Avbryt med knapp eller timer om du vill
-    printf("yooyo\n");
   }
 }
