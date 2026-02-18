@@ -14,7 +14,6 @@ int main(void) {
   lcd_init();
   // Test 2: Bättre auto-scroll
   lcd_clear();
-  // Serial init messes with the text output on lcd..
   init_serial();
   // NEW STRUCTS TO DO. Need pointers etc (double pointers?)
   struct Ad testAd;
