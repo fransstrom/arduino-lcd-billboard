@@ -25,6 +25,7 @@ int main(void) {
   testAd.company_name = "Svartepetters AB ";
   testAd.ad_text = "Bygga svart? Call Petter, 0414-30395";
   testAd.balance = 9000;
+
   struct Ad testAd2;
   testAd2.company_name = "Ankas Pajer AB";
   testAd2.ad_text = "Hurry before Manson have eaten all the pies";
