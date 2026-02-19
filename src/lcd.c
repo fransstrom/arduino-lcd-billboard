@@ -287,7 +287,7 @@ void lcd_continuous_scroll(char *text, uint8_t row) {
 }
 void lcd_continuous_scroll_ad(struct Ad *ad, uint8_t row) {
 
-  uint8_t time_in_func = 0;
+  volatile millis_t time_in_func = millis_get();
   // while (ad->company_name[company_name_len]) {
   //   company_name_len++;
   // }
@@ -320,8 +320,8 @@ void lcd_continuous_scroll_ad(struct Ad *ad, uint8_t row) {
   while (millis_get() - time_in_func <= 10000) { // Oändlig loop!
     lcd_set_cursor(0, row);
 
-    time_in_func = millis();
-    printf("%lu\n", millis_get() - time_in_func);
+    printf("%s millis_t: %lu\n", ad->company_name, millis_get() - time_in_func);
+    // printf("%lu\n", millis_get() - time_in_func);
     // Visa 16 tecken från aktuell offset
     for (uint8_t i = 0; i < 16; i++) {
       uint8_t idx = (offset + i) % text_len;
@@ -334,13 +334,15 @@ void lcd_continuous_scroll_ad(struct Ad *ad, uint8_t row) {
     _delay_ms(LCD_SCROLL_DELAY);
     // Avbryt med knapp eller timer om du vill
   }
+  printf("LOOP SCROLL_AD DONE\n\n");
   millis_reset();
 }
+
 void lcd_continuous_scroll_company(const struct Company *company, uint8_t row) {
 
+  volatile millis_t time_in_func = millis_get();
   // Randomize company ad ->
   struct Ad ad = company->ad_collection[0];
-  uint8_t time_in_func = 0;
   // while (ad->company_name[company_name_len]) {
   //   company_name_len++;
   // }
@@ -373,8 +375,9 @@ void lcd_continuous_scroll_company(const struct Company *company, uint8_t row) {
   while (millis_get() - time_in_func <= 10000) { // Oändlig loop!
     lcd_set_cursor(0, row);
 
-    time_in_func = millis();
-    printf("%lu\n", millis_get() - time_in_func);
+    // time_in_func = millis();
+    printf("%s millis_t: %lu\n", company->company_name,
+           millis_get() - time_in_func);
     // Visa 16 tecken från aktuell offset
     for (uint8_t i = 0; i < 16; i++) {
       uint8_t idx = (offset + i) % text_len;
@@ -387,5 +390,6 @@ void lcd_continuous_scroll_company(const struct Company *company, uint8_t row) {
     _delay_ms(LCD_SCROLL_DELAY);
     // Avbryt med knapp eller timer om du vill
   }
+  printf("LOOP SCROLL_COMPANY DONE\n\n");
   millis_reset();
 }

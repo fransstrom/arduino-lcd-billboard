@@ -18,11 +18,18 @@ struct Company {
 };
 
 struct Billboard {
-  struct Ad *ads;
+  struct Company *companies;
 };
 
 void company_init_ad(const struct Company *company);
 void company_add_ad(struct Company *company, struct Ad *ad);
+
+void billboard_select_random_company(); // Exclude last company. reduce add
+                                        // balance for all companies and
+                                        // increase chance for the company with
+                                        // the most balance percentage wise.
+                                        // Then somehow random select there.
+                                        // Like a dice roll or uneven coin flip
 
 void testfunc(void);
 #endif // !BILLBOARD_H

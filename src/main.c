@@ -4,6 +4,7 @@
 #include "uart.h"
 #include <avr/interrupt.h>
 #include <avr/io.h>
+#include <stdio.h>
 #include <util/delay.h>
 
 int main(void) {
@@ -18,6 +19,7 @@ int main(void) {
   sverte_petter.num_ads = 0;
   sverte_petter.company_name = "Svartepetters AB";
   sverte_petter.ad_balance = 100;
+  sverte_petter.ad_collection = NULL;
   // NEW STRUCTS TO DO. Create inserts in billboard / company using mallocs
   struct Ad testAd;
   testAd.company_name = "Svartepetters AB ";
@@ -36,7 +38,11 @@ int main(void) {
   while (1) {
     lcd_clear();
     if (order % 2 == 0) {
+      sverte_petter.ad_balance -= AD_COST;
       company_init_ad(&sverte_petter);
+      printf("balance = %d\n", sverte_petter.ad_balance);
+      // lcd_continuous_scroll_company(&sverte_petter, 1);
+      // lcd_continuous_scroll_ad(&sverte_petter.ad_collection[0], 1);
     } else {
       lcd_continuous_scroll_ad(&sverte_petter.ad_collection[1], 1);
     }

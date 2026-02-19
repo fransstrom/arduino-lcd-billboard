@@ -2,7 +2,8 @@ CC := avr-gcc
 LD := avr-ld
 OBJCOPY := avr-objcopy
 OBJISP := avrdude
-PORT := /dev/ttyACM0
+# PORT := /dev/ttyACM0
+PORT := /dev/ttyACM1
 MCU := atmega328p
 CFLAGS := -Wall -Wextra -Wundef -pedantic \
 		-Os -std=gnu99 -DF_CPU=16000000UL -mmcu=${MCU} -DBAUD=9600
