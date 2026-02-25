@@ -2,12 +2,15 @@
 #define BILLBOARD_H
 
 extern const int AD_COST;
+extern const int AD_RUNTIME_SECONDS;
+extern const int AD_COST_PER_SECOND;
 
-enum Animation { BLINK, SCROLL };
+enum Animation { BLINK, SCROLL, NONE };
+
 struct Ad {
   char *company_name;
   char *ad_text;
-  int balance;
+  enum Animation animation;
 };
 
 struct Company {
@@ -21,7 +24,8 @@ struct Billboard {
   struct Company *companies;
 };
 
-void company_init_ad(const struct Company *company);
+void billboard_run(void);
+void company_init_ad(struct Company *company);
 void company_add_ad(struct Company *company, struct Ad *ad);
 
 void billboard_select_random_company(); // Exclude last company. reduce add

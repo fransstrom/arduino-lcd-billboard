@@ -285,7 +285,8 @@ void lcd_continuous_scroll(char *text, uint8_t row) {
     // Avbryt med knapp eller timer om du vill
   }
 }
-void lcd_continuous_scroll_ad(struct Ad *ad, uint8_t row) {
+
+void lcd_continuous_scroll_ad(const struct Ad *ad, char *company_name) {
 
   volatile millis_t time_in_func = millis_get();
   // while (ad->company_name[company_name_len]) {
@@ -301,9 +302,9 @@ void lcd_continuous_scroll_ad(struct Ad *ad, uint8_t row) {
   // }
 
   // Visa första 16 tecken
-  for (int i = 0; i < 16 && ad->company_name[i] != '\0'; i++) {
+  for (int i = 0; i < 16 && company_name[i] != '\0'; i++) {
     _delay_ms(100);
-    lcd_write(ad->company_name[i]);
+    lcd_write(company_name[i]);
   }
 
   uint8_t text_len = 0;
@@ -318,9 +319,9 @@ void lcd_continuous_scroll_ad(struct Ad *ad, uint8_t row) {
 
   uint8_t offset = 0;
   while (millis_get() - time_in_func <= 10000) { // Oändlig loop!
-    lcd_set_cursor(0, row);
+    lcd_set_cursor(0, 1);
 
-    printf("%s millis_t: %lu\n", ad->company_name, millis_get() - time_in_func);
+    printf("%s millis_t: %lu\n", company_name, millis_get() - time_in_func);
     // printf("%lu\n", millis_get() - time_in_func);
     // Visa 16 tecken från aktuell offset
     for (uint8_t i = 0; i < 16; i++) {
@@ -392,4 +393,19 @@ void lcd_continuous_scroll_company(const struct Company *company, uint8_t row) {
   }
   printf("LOOP SCROLL_COMPANY DONE\n\n");
   millis_reset();
+}
+
+void lcd_run_add(const struct Ad *ad, char *company_name) {
+  switch (ad->animation) {
+  case SCROLL:
+    printf("SCROLLING IN NEW RUN_ADD_FUNCTION");
+    lcd_continuous_scroll_ad(ad, company_name);
+    break;
+  case BLINK:
+    break;
+  case NONE:
+    break;
+  default:
+    break;
+  }
 }
