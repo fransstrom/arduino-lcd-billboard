@@ -13,7 +13,6 @@ int main(void) {
   lcd_init();
   lcd_clear();
   init_serial();
-
   billboard_run();
   return 0;
 }

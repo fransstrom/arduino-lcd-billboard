@@ -1,8 +1,9 @@
 #ifndef BILLBOARD_H
 #define BILLBOARD_H
 
+#include "millis.h"
 extern const int AD_COST;
-extern const int AD_RUNTIME_SECONDS;
+extern const millis_t AD_RUNTIME_MS;
 extern const int AD_COST_PER_SECOND;
 
 enum Animation { BLINK, SCROLL, NONE };

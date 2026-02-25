@@ -1,11 +1,12 @@
 #include "billboard.h"
 #include "lcd.h"
+#include "millis.h"
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 
 const int AD_COST = 100;
-const int AD_RUNTIME_SECONDS = 20;
+const millis_t AD_RUNTIME_MS = 2000;
 const int AD_COST_PER_SECOND = 3;
 
 void company_add_ad(struct Company *company, struct Ad *ad) {
@@ -30,6 +31,13 @@ void billboard_run(void) {
   sverte_petter.company_name = "Svartepetters AB";
   sverte_petter.ad_balance = 100;
   sverte_petter.ad_collection = NULL;
+
+  struct Company ankan;
+  ankan.num_ads = 0;
+  ankan.company_name = "Ankas pajer AB";
+  ankan.ad_balance = 20;
+  ankan.ad_collection = NULL;
+
   // NEW STRUCTS TO DO. Create inserts in billboard / company using mallocs
   struct Ad testAd;
   testAd.company_name = "Svartepetters AB ";
@@ -42,7 +50,7 @@ void billboard_run(void) {
   testAd2.animation = SCROLL;
 
   company_add_ad(&sverte_petter, &testAd);
-  company_add_ad(&sverte_petter, &testAd2);
+  company_add_ad(&ankan, &testAd2);
   // Now with millis we can wrap this in a while loop and create a function to
   // randomize company ads.
   int order = 0;
@@ -55,7 +63,7 @@ void billboard_run(void) {
       // lcd_continuous_scroll_company(&sverte_petter, 1);
       // lcd_continuous_scroll_ad(&sverte_petter.ad_collection[0], 1);
     } else {
-      company_init_ad(&sverte_petter);
+      company_init_ad(&ankan);
     }
     order++;
   }

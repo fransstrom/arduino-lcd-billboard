@@ -318,7 +318,7 @@ void lcd_continuous_scroll_ad(const struct Ad *ad, char *company_name) {
   text_len += 4;
 
   uint8_t offset = 0;
-  while (millis_get() - time_in_func <= 10000) { // Oändlig loop!
+  while (millis_get() - time_in_func <= AD_RUNTIME_MS) { // Oändlig loop!
     lcd_set_cursor(0, 1);
 
     printf("%s millis_t: %lu\n", company_name, millis_get() - time_in_func);
@@ -373,7 +373,7 @@ void lcd_continuous_scroll_company(const struct Company *company, uint8_t row) {
   text_len += 4;
 
   uint8_t offset = 0;
-  while (millis_get() - time_in_func <= 10000) { // Oändlig loop!
+  while (millis_get() - time_in_func <= AD_RUNTIME_MS) { // Oändlig loop!
     lcd_set_cursor(0, row);
 
     // time_in_func = millis();
