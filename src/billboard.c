@@ -61,11 +61,9 @@ void company_init_ad(struct Company *company) {
   lcd_run_add(&company->ad_collection[0], company->company_name);
   // lcd_continuous_scroll_company(company, 1);
 }
-
-void billboard_run(void) {
-  struct Billboard billboard;
-  billboard.num_companies = 0;
-  billboard.companies = NULL;
+void billboard_prep(struct Billboard *billboard) {
+  billboard->num_companies = 0;
+  billboard->companies = NULL;
 
   struct Company sverte_petter;
   sverte_petter.num_ads = 0;
@@ -92,17 +90,20 @@ void billboard_run(void) {
 
   company_add_ad(&sverte_petter, &testAd);
   company_add_ad(&ankan, &testAd2);
-  billboard_add_company(&billboard, &sverte_petter);
-  billboard_add_company(&billboard, &ankan);
-  // Now with millis we can wrap this in a while loop and create a function
-  // to randomize company ads.
+  billboard_add_company(billboard, &sverte_petter);
+  billboard_add_company(billboard, &ankan);
+}
+void billboard_run(void) {
+
+  struct Billboard billboard;
+  billboard_prep(&billboard);
+
   int order = 0;
   while (1) {
     lcd_clear();
     // Randomize company here.
     if (order % 2 == 0) {
       company_init_ad(&billboard.companies[0]);
-      printf("balance = %d\n", sverte_petter.ad_balance);
     } else {
       company_init_ad(&billboard.companies[1]);
     }

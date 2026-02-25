@@ -35,6 +35,7 @@ bool billboard_remove_company(
     struct Company *company); // Remove if ad_balance < 0
 void company_init_ad(struct Company *company);
 bool company_add_ad(struct Company *company, struct Ad *ad);
+void billboard_prep(struct Billboard *billboard);
 
 void billboard_select_random_company(
     void); // Exclude last company. reduce add
