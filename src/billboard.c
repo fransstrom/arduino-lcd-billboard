@@ -61,6 +61,7 @@ void company_init_ad(struct Company *company) {
   lcd_run_add(&company->ad_collection[0], company->company_name);
   // lcd_continuous_scroll_company(company, 1);
 }
+
 void billboard_prep(struct Billboard *billboard) {
   billboard->num_companies = 0;
   billboard->companies = NULL;
@@ -80,8 +81,8 @@ void billboard_prep(struct Billboard *billboard) {
   // NEW STRUCTS TO DO. Create inserts in billboard / company using mallocs
   struct Ad testAd;
   testAd.company_name = "Svartepetters AB ";
-  testAd.ad_text = "Bygga svart? Call Petter, 0414-30395";
-  testAd.animation = SCROLL;
+  testAd.ad_text = "Bygga svart? Call Petter";
+  testAd.animation = NONE;
 
   struct Ad testAd2;
   testAd2.company_name = "Ankas Pajer AB";
@@ -93,6 +94,7 @@ void billboard_prep(struct Billboard *billboard) {
   billboard_add_company(billboard, &sverte_petter);
   billboard_add_company(billboard, &ankan);
 }
+
 void billboard_run(void) {
 
   struct Billboard billboard;

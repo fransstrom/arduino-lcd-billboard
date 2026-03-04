@@ -339,59 +339,44 @@ void lcd_continuous_scroll_ad(const struct Ad *ad, char *company_name) {
   millis_reset();
 }
 
-void lcd_continuous_scroll_company(const struct Company *company, uint8_t row) {
-
+void lcd_continuous_blink_ad(const struct Ad *ad, char *company_name) {
   volatile millis_t time_in_func = millis_get();
-  // Randomize company ad ->
-  struct Ad ad = company->ad_collection[0];
-  // while (ad->company_name[company_name_len]) {
-  //   company_name_len++;
-  // }
-  // Following snippet if for having first row static and second row scrolling
+  bool text_visible = true;
+
+  // Skriv företagsnamn EN gång (rad 0)
   lcd_set_cursor(0, 0);
-
-  // Visa 16 tecken från aktuell offset
-  // for (uint8_t i = 0; i < 16; i++) {
-  //   uint8_t idx = (0 + i) % company_name_len;
-  //   lcd_write(buffer[idx]);
-  // }
-
-  // Visa första 16 tecken
-  for (int i = 0; i < 16 && company->company_name[i] != '\0'; i++) {
-    _delay_ms(100);
-    lcd_write(company->company_name[i]);
+  for (int i = 0; i < 16 && company_name[i] != '\0'; i++) {
+    lcd_write(company_name[i]);
   }
 
+  // Förbered texten
   uint8_t text_len = 0;
-  char buffer[100];
-  while (ad.ad_text[text_len]) {
+  while (ad->ad_text[text_len]) {
     text_len++;
-  };
+  }
 
-  // Padding för att separera start/slut
-  snprintf(buffer, sizeof(buffer), "%s    ", ad.ad_text);
-  text_len += 4;
+  while (millis_get() - time_in_func <= AD_RUNTIME_MS) {
+    lcd_set_cursor(0, 1); // Sätt cursor på rad 1
 
-  uint8_t offset = 0;
-  while (millis_get() - time_in_func <= AD_RUNTIME_MS) { // Oändlig loop!
-    lcd_set_cursor(0, row);
-
-    // time_in_func = millis();
-    printf("%s millis_t: %lu\n", company->company_name,
-           millis_get() - time_in_func);
-    // Visa 16 tecken från aktuell offset
-    for (uint8_t i = 0; i < 16; i++) {
-      uint8_t idx = (offset + i) % text_len;
-      lcd_write(buffer[idx]);
+    if (text_visible) {
+      // Visa texten (max 16 tecken)
+      for (uint8_t i = 0; i < 16 && i < text_len; i++) {
+        lcd_write(ad->ad_text[i]);
+      }
+    } else {
+      // Skriv mellanslag för att "radera" texten
+      for (uint8_t i = 0; i < 16; i++) {
+        lcd_write(' ');
+      }
     }
 
-    offset = (offset + 1) % text_len;
+    text_visible = !text_visible; // Toggla synlighet
 
-    // Visa 16 tecken från aktuell offset
-    _delay_ms(LCD_SCROLL_DELAY);
-    // Avbryt med knapp eller timer om du vill
+    printf("%s millis_t: %lu\n", company_name, millis_get() - time_in_func);
+    _delay_ms(500); // Blinka var 500ms
   }
-  printf("LOOP SCROLL_COMPANY DONE\n\n");
+
+  printf("LOOP BLINK_AD DONE\n\n");
   millis_reset();
 }
 
@@ -402,8 +387,10 @@ void lcd_run_add(const struct Ad *ad, char *company_name) {
     lcd_continuous_scroll_ad(ad, company_name);
     break;
   case BLINK:
+    lcd_continuous_blink_ad(ad, company_name);
     break;
   case NONE:
+
     break;
   default:
     break;
