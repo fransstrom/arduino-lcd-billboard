@@ -56,8 +56,8 @@ bool billboard_remove_company(struct Billboard *billboard,
 }
 
 void company_init_ad(struct Company *company) {
+  printf("copany name %s\n", company->company_name);
   // Select company add here by random / rules.
-  printf("init add for %s\n", company->company_name);
   lcd_run_add(&company->ad_collection[0], company->company_name);
   // lcd_continuous_scroll_company(company, 1);
 }
@@ -80,17 +80,16 @@ void billboard_prep(struct Billboard *billboard) {
 
   // NEW STRUCTS TO DO. Create inserts in billboard / company using mallocs
   struct Ad testAd;
-  testAd.company_name = "Svartepetters AB ";
   testAd.ad_text = "Bygga svart? Call Petter";
-  testAd.animation = NONE;
+  testAd.animation = BLINK;
 
   struct Ad testAd2;
-  testAd2.company_name = "Ankas Pajer AB";
   testAd2.ad_text = "Hurry before Manson have eaten all the pies";
   testAd2.animation = SCROLL;
 
   company_add_ad(&sverte_petter, &testAd);
   company_add_ad(&ankan, &testAd2);
+
   billboard_add_company(billboard, &sverte_petter);
   billboard_add_company(billboard, &ankan);
 }
