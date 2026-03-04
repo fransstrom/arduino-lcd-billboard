@@ -22,7 +22,8 @@ struct Company {
 };
 
 struct Billboard {
-  struct Company *companies; // Set
+  struct Company *companies;     // Set
+  struct Company active_company; // To not select same company twice in a row
   int num_companies;
 };
 
@@ -37,12 +38,13 @@ bool company_add_ad(struct Company *company, struct Ad *ad);
 
 void billboard_prep(struct Billboard *billboard);
 
-void billboard_select_random_company(
-    void); // Exclude last company. reduce add
-           // balance for all companies and
-           // increase chance for the company with
-           // the most balance percentage wise.
-           // Then somehow random select there.
-           // Like a dice roll or uneven coin flip
-
+// void billboard_select_random_company(
+//     const struct Billboard *billboard,
+//     struct Company *company); // Exclude last company. reduce add
+//                               // balance for all companies and
+//                               // increase chance for the company with
+//                               // the most balance percentage wise.
+//                               // Then somehow random select there.
+//                               // Like a dice roll or uneven coin flip
+//
 #endif // !BILLBOARD_H
