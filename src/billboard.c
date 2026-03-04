@@ -84,7 +84,7 @@ void billboard_prep(struct Billboard *billboard) {
   testAd.animation = BLINK;
 
   struct Ad testAd2;
-  testAd2.ad_text = "Hurry before Manson have eaten all the pies";
+  testAd2.ad_text = "Manson is eating all the pies!";
   testAd2.animation = SCROLL;
 
   company_add_ad(&sverte_petter, &testAd);
@@ -95,7 +95,6 @@ void billboard_prep(struct Billboard *billboard) {
 }
 
 void billboard_run(void) {
-
   struct Billboard billboard;
   billboard_prep(&billboard);
 

@@ -196,6 +196,7 @@ void swedish_parser(char *text) {
   }
   *dst = '\0';
 }
+
 void lcd_puts(char *string) {
   swedish_parser(string);
   for (char *it = string; *it; it++) {
@@ -339,7 +340,7 @@ void lcd_continuous_scroll_ad(const struct Ad *ad, char *company_name) {
   millis_reset();
 }
 
-void lcd_continuous_blink_ad(const struct Ad *ad, char *company_name) {
+void lcd_continuous_blink_ad(const struct Ad *ad) {
   volatile millis_t time_in_func = millis_get();
   bool text_visible = true;
 
@@ -386,7 +387,45 @@ void lcd_continuous_blink_ad(const struct Ad *ad, char *company_name) {
     _delay_ms(500);
   }
 
-  printf("LOOP BLINK_AD DONE\n\n");
+  millis_reset();
+}
+
+void lcd_print_static_ad(const struct Ad *ad) {
+  volatile millis_t time_in_func = millis_get();
+
+  uint8_t text_len = 0;
+  while (ad->ad_text[text_len]) {
+    text_len++;
+  }
+
+  // Hitta brytpunkt vid mellanslag nära tecken 16
+  uint8_t break_point = 16;
+  if (text_len > 16) {
+    // Sök bakåt från position 16 efter ett mellanslag
+    for (int8_t i = 16; i >= 0; i--) {
+      if (ad->ad_text[i] == ' ') {
+        break_point = i + 1; // Rad 1 börjar efter mellanslaget
+        break;
+      }
+    }
+  }
+  lcd_set_cursor(0, 0);
+
+  // Rad 0: tecken 0 till break_point
+  for (uint8_t i = 0; i < 16; i++) {
+    lcd_write(i < break_point ? ad->ad_text[i] : ' ');
+  }
+  // Rad 1: tecken från break_point
+  lcd_set_cursor(0, 1);
+  for (uint8_t i = 0; i < 16; i++) {
+    uint8_t idx = break_point + i;
+    lcd_write(idx < text_len ? ad->ad_text[idx] : ' ');
+  }
+
+  //"sleep" 20 seconds
+  while (millis_get() - time_in_func <= AD_RUNTIME_MS) {
+  }
+
   millis_reset();
 }
 
@@ -397,10 +436,10 @@ void lcd_run_add(const struct Ad *ad, char *company_name) {
     lcd_continuous_scroll_ad(ad, company_name);
     break;
   case BLINK:
-    lcd_continuous_blink_ad(ad, company_name);
+    lcd_continuous_blink_ad(ad);
     break;
   case NONE:
-
+    lcd_print_static_ad(ad);
     break;
   default:
     break;

@@ -45,5 +45,4 @@ void billboard_select_random_company(
            // Then somehow random select there.
            // Like a dice roll or uneven coin flip
 
-void testfunc(void);
 #endif // !BILLBOARD_H
