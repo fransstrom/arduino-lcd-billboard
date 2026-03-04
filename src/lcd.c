@@ -343,37 +343,47 @@ void lcd_continuous_blink_ad(const struct Ad *ad, char *company_name) {
   volatile millis_t time_in_func = millis_get();
   bool text_visible = true;
 
-  // Skriv företagsnamn EN gång (rad 0)
-  lcd_set_cursor(0, 0);
-  for (int i = 0; i < 16 && company_name[i] != '\0'; i++) {
-    lcd_write(company_name[i]);
-  }
-
-  // Förbered texten
   uint8_t text_len = 0;
   while (ad->ad_text[text_len]) {
     text_len++;
   }
 
-  while (millis_get() - time_in_func <= AD_RUNTIME_MS) {
-    lcd_set_cursor(0, 1); // Sätt cursor på rad 1
-
-    if (text_visible) {
-      // Visa texten (max 16 tecken)
-      for (uint8_t i = 0; i < 16 && i < text_len; i++) {
-        lcd_write(ad->ad_text[i]);
-      }
-    } else {
-      // Skriv mellanslag för att "radera" texten
-      for (uint8_t i = 0; i < 16; i++) {
-        lcd_write(' ');
+  // Hitta brytpunkt vid mellanslag nära tecken 16
+  uint8_t break_point = 16;
+  if (text_len > 16) {
+    // Sök bakåt från position 16 efter ett mellanslag
+    for (int8_t i = 16; i >= 0; i--) {
+      if (ad->ad_text[i] == ' ') {
+        break_point = i + 1; // Rad 1 börjar efter mellanslaget
+        break;
       }
     }
+  }
 
-    text_visible = !text_visible; // Toggla synlighet
+  while (millis_get() - time_in_func <= AD_RUNTIME_MS) {
+    lcd_set_cursor(0, 0);
 
-    printf("%s millis_t: %lu\n", company_name, millis_get() - time_in_func);
-    _delay_ms(500); // Blinka var 500ms
+    if (text_visible) {
+      // Rad 0: tecken 0 till break_point
+      for (uint8_t i = 0; i < 16; i++) {
+        lcd_write(i < break_point ? ad->ad_text[i] : ' ');
+      }
+      // Rad 1: tecken från break_point
+      lcd_set_cursor(0, 1);
+      for (uint8_t i = 0; i < 16; i++) {
+        uint8_t idx = break_point + i;
+        lcd_write(idx < text_len ? ad->ad_text[idx] : ' ');
+      }
+    } else {
+      for (uint8_t i = 0; i < 16; i++)
+        lcd_write(' ');
+      lcd_set_cursor(0, 1);
+      for (uint8_t i = 0; i < 16; i++)
+        lcd_write(' ');
+    }
+
+    text_visible = !text_visible;
+    _delay_ms(500);
   }
 
   printf("LOOP BLINK_AD DONE\n\n");
