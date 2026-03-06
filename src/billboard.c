@@ -8,7 +8,7 @@
 #include <string.h>
 
 const int AD_COST = 100;
-const millis_t AD_RUNTIME_MS = 2000;
+const millis_t AD_RUNTIME_MS = 10000;
 const int AD_COST_PER_SECOND = 3;
 
 bool company_add_ad(struct Company *company, struct Ad *ad) {
