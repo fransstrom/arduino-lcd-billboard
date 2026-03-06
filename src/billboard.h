@@ -8,10 +8,13 @@ extern const millis_t AD_RUNTIME_MS;
 extern const int AD_COST_PER_SECOND;
 
 enum Animation { BLINK, SCROLL, NONE };
+enum CompanyAdStrategy { TIME_BASED, RANDOM };
+enum AdStrategyRule { EVEN_MINUTES, ODD_MINUTES };
 
 struct Ad {
   char *ad_text;
   enum Animation animation;
+  enum AdStrategyRule ad_rule;
 };
 
 struct Company {
@@ -19,6 +22,7 @@ struct Company {
   int ad_balance; // Ticking down each running add (20 sek = AD_COST)
   struct Ad *ad_collection;
   int num_ads;
+  enum CompanyAdStrategy ad_strategy;
 };
 
 struct Billboard {

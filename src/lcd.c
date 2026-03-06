@@ -289,19 +289,10 @@ void lcd_continuous_scroll(char *text, uint8_t row) {
 
 void lcd_continuous_scroll_ad(const struct Ad *ad, char *company_name) {
 
-  volatile millis_t time_in_func = millis_get();
-  // while (ad->company_name[company_name_len]) {
-  //   company_name_len++;
-  // }
+  volatile millis_t start = millis_get();
+
   // Following snippet if for having first row static and second row scrolling
   lcd_set_cursor(0, 0);
-
-  // Visa 16 tecken från aktuell offset
-  // for (uint8_t i = 0; i < 16; i++) {
-  //   uint8_t idx = (0 + i) % company_name_len;
-  //   lcd_write(buffer[idx]);
-  // }
-
   // Visa första 16 tecken
   for (int i = 0; i < 16 && company_name[i] != '\0'; i++) {
     _delay_ms(100);
@@ -319,10 +310,10 @@ void lcd_continuous_scroll_ad(const struct Ad *ad, char *company_name) {
   text_len += 4;
 
   uint8_t offset = 0;
-  while (millis_get() - time_in_func <= AD_RUNTIME_MS) { // Oändlig loop!
+  while (millis_get() - start <= AD_RUNTIME_MS) { // Oändlig loop!
     lcd_set_cursor(0, 1);
 
-    printf("%s millis_t: %lu\n", company_name, millis_get() - time_in_func);
+    printf("%s millis_t: %lu\n", company_name, millis_get() - start);
     // printf("%lu\n", millis_get() - time_in_func);
     // Visa 16 tecken från aktuell offset
     for (uint8_t i = 0; i < 16; i++) {
@@ -337,11 +328,10 @@ void lcd_continuous_scroll_ad(const struct Ad *ad, char *company_name) {
     // Avbryt med knapp eller timer om du vill
   }
   printf("LOOP SCROLL_AD DONE\n\n");
-  millis_reset();
 }
 
 void lcd_continuous_blink_ad(const struct Ad *ad) {
-  volatile millis_t time_in_func = millis_get();
+  volatile millis_t start = millis_get();
   bool text_visible = true;
 
   uint8_t text_len = 0;
@@ -361,7 +351,7 @@ void lcd_continuous_blink_ad(const struct Ad *ad) {
     }
   }
 
-  while (millis_get() - time_in_func <= AD_RUNTIME_MS) {
+  while (millis_get() - start <= AD_RUNTIME_MS) {
     lcd_set_cursor(0, 0);
 
     if (text_visible) {
@@ -386,12 +376,10 @@ void lcd_continuous_blink_ad(const struct Ad *ad) {
     text_visible = !text_visible;
     _delay_ms(500);
   }
-
-  millis_reset();
 }
 
 void lcd_print_static_ad(const struct Ad *ad) {
-  volatile millis_t time_in_func = millis_get();
+  volatile millis_t start = millis_get();
 
   uint8_t text_len = 0;
   while (ad->ad_text[text_len]) {
@@ -423,10 +411,8 @@ void lcd_print_static_ad(const struct Ad *ad) {
   }
 
   //"sleep" 20 seconds
-  while (millis_get() - time_in_func <= AD_RUNTIME_MS) {
+  while (millis_get() - start <= AD_RUNTIME_MS) {
   }
-
-  millis_reset();
 }
 
 void lcd_run_add(const struct Ad *ad, char *company_name) {

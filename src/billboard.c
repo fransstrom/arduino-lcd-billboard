@@ -6,9 +6,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 const int AD_COST = 100;
-const millis_t AD_RUNTIME_MS = 10000;
+const millis_t AD_RUNTIME_MS = 2000;
 const int AD_COST_PER_SECOND = 3;
 
 bool company_add_ad(struct Company *company, struct Ad *ad) {
@@ -55,18 +54,42 @@ bool billboard_remove_company(struct Billboard *billboard,
   }
   return false;
 }
+
 void company_ad_charge(struct Company *company) {
   company->ad_balance -= AD_COST;
 }
 
-void company_init_ad(struct Company *company) {
-  printf("copany name %s\n", company->company_name);
-  company_ad_charge(company);
+uint32_t minutes_elapsed(void) { return millis_get() / 60000; }
+bool is_even_minute(void) { return minutes_elapsed() % 2 == 0; }
 
-  // Select company add here by random / rules.
-  int rand_ad = rand() % (company->num_ads);
-  printf("random company index: %d\n", rand_ad);
-  lcd_run_add(&company->ad_collection[rand_ad], company->company_name);
+void company_init_ad(struct Company *company) {
+  company_ad_charge(company);
+  struct Ad ad;
+  if (company->ad_strategy == TIME_BASED) {
+    printf("AD strat TIME, millis: %lu\n", millis_get());
+    for (int i = 0; i < company->num_ads; i++) {
+      if (is_even_minute() &&
+          company->ad_collection[i].ad_rule == EVEN_MINUTES) {
+
+        printf("EVEN MINUTE AD GO! \n");
+        ad = company->ad_collection[i];
+        break;
+      } else if (!is_even_minute() &&
+                 company->ad_collection[i].ad_rule == ODD_MINUTES) {
+
+        printf("ODD MINUTE AD GO! \n");
+        ad = company->ad_collection[i];
+        break;
+      }
+    }
+
+  } else {
+    printf("AD strat RAND\n");
+    // Select company add here by random / rules.
+    int rand_index = rand() % (company->num_ads);
+    ad = company->ad_collection[rand_index];
+  }
+  lcd_run_add(&ad, company->company_name);
   // lcd_continuous_scroll_company(company, 1);
 }
 
@@ -79,33 +102,39 @@ void billboard_prep(struct Billboard *billboard) {
   sverte_petter.company_name = "Svartepetters AB";
   sverte_petter.ad_balance = 1000;
   sverte_petter.ad_collection = NULL;
+  sverte_petter.ad_strategy = TIME_BASED;
 
   struct Company ankan;
   ankan.num_ads = 0;
   ankan.company_name = "Ankas pajer AB";
   ankan.ad_balance = 200;
   ankan.ad_collection = NULL;
+  ankan.ad_strategy = RANDOM;
 
   struct Company harry;
   harry.num_ads = 0;
   harry.company_name = "Hederlige Harry";
   harry.ad_balance = 500;
   harry.ad_collection = NULL;
+  harry.ad_strategy = RANDOM;
 
   struct Company goofy;
   goofy.num_ads = 0;
   goofy.ad_collection = NULL;
   goofy.ad_balance = 250;
   goofy.company_name = "Detective Goofy";
+  goofy.ad_strategy = RANDOM;
 
   // NEW STRUCTS TO DO. Create inserts in billboard / company using mallocs
   struct Ad petter;
   petter.ad_text = "Bygga svart? Call Petter";
   petter.animation = BLINK;
+  petter.ad_rule = ODD_MINUTES;
 
   struct Ad petter2;
   petter2.ad_text = "Let Petter do the work!";
   petter2.animation = BLINK;
+  petter2.ad_rule = EVEN_MINUTES;
 
   struct Ad anka;
   anka.ad_text = "Manson is eating all the pies!";
