@@ -432,7 +432,6 @@ void lcd_print_static_ad(const struct Ad *ad) {
 void lcd_run_add(const struct Ad *ad, char *company_name) {
   switch (ad->animation) {
   case SCROLL:
-    printf("SCROLLING IN NEW RUN_ADD_FUNCTION");
     lcd_continuous_scroll_ad(ad, company_name);
     break;
   case BLINK:

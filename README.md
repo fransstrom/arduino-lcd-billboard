@@ -7,4 +7,5 @@ Wokwi: https://wokwi.com/projects/456396662970036225
 # TODO
 - [ ] Real struct of billboard. company, ads blinking animation, 
 - [ ] Balance logics & random logics
-- [ ] 
+- [ ] Create company function.
+- [ ]
