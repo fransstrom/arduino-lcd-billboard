@@ -1,6 +1,4 @@
 #include "lcd.h"
-#include "ad.h"
-#include "millis.h"
 #include <stdarg.h>
 #include <stdint.h>
 #include <stdio.h>

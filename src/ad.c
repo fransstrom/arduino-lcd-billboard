@@ -1,6 +1,6 @@
-
 #include "ad.h"
 #include "lcd.h"
+#include <stdbool.h>
 #include <stdio.h>
 #include <util/delay.h>
 

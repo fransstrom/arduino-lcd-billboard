@@ -1,4 +1,3 @@
-#include "billboard.h"
 #include <avr/io.h>
 #define LCD_PORT PORTD
 #define LCD_DDR DDRD
