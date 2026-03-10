@@ -12,7 +12,7 @@ SRC := src
 BUILD := build
 ELF := $(BUILD)/program.elf
 BIN := $(BUILD)/program.hex
-SOURCES := $(SRC)/main.c $(SRC)/lcd.c $(SRC)/billboard.c $(SRC)/millis.c $(SRC)/uart.c
+SOURCES := $(SRC)/main.c $(SRC)/lcd.c $(SRC)/billboard.c $(SRC)/millis.c $(SRC)/uart.c $(SRC)/company.c $(SRC)/ad.c $(SRC)/millis_helper.c
 OBJS := $(addprefix $(BUILD)/, $(notdir $(SOURCES:.c=.o)))
 BAUD := 9600
 all: $(BIN)

@@ -86,6 +86,7 @@ void lcd_printf(char *format, ...);
 
 void lcd_autoscroll_text(char *text, uint8_t row);
 void lcd_continuous_scroll(char *text, uint8_t row);
+struct Ad;
 void lcd_continuous_scroll_ad(const struct Ad *ad, char *company_name);
 
 void lcd_run_add(const struct Ad *ad, char *company_name);
