@@ -51,6 +51,5 @@ void company_init_ad(struct Company *company) {
     int rand_index = rand() % (company->num_ads);
     ad = company->ad_collection[rand_index];
   }
-  lcd_run_add(&ad, company->company_name);
-  // lcd_continuous_scroll_company(company, 1);
+  ad_run(&ad, company->company_name);
 }

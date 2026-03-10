@@ -15,6 +15,8 @@ struct Ad {
   enum AdStrategyRule ad_rule;
 };
 
+void ad_run(const struct Ad *ad, char *company_name);
+
 // Move ad functions from LCD to here.
 
 #endif // !AD_H
