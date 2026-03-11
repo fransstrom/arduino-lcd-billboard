@@ -3,8 +3,10 @@
 #include "lcd.h"
 #include <assert.h>
 #include <stdbool.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <util/delay.h>
 
 struct Billboard {
   struct Company *companies;     // Set
@@ -104,13 +106,70 @@ billboard_select_random_company(const struct Billboard *billboard) {
   return selected;
 }
 
+struct Company *get_random_company_in_range(struct CompanySelector selector) {
+  int rand_num = rand() % selector.total_balance;
+  printf("RANGE %d", rand_num);
+  for (int i = 0; i < selector.num_companies; i++) {
+    if (rand_num >= selector.company_slots[i].range_min &&
+        rand_num < selector.company_slots[i].range_max) {
+      return selector.company_slots[i].company;
+    }
+  }
+  return selector.company_slots[0].company;
+}
+
+struct Company *billboard_select_company(const struct Billboard *billboard) {
+  struct CompanySelector selector;
+  selector.num_companies = 0;
+  selector.total_balance = 0;
+  selector.company_slots =
+      malloc(sizeof(struct CompanySlot) * billboard->num_companies);
+
+  struct Company *company;
+  printf("Total billboard companies: %d", billboard->num_companies);
+  for (int i = 0; i < billboard->num_companies; i++) {
+    printf("should only run 4 times or so");
+    company = &billboard->companies[i];
+    if (company->ad_balance >= AD_COST &&
+        company->company_name != billboard->active_company.company_name) {
+      selector.company_slots[selector.num_companies].company = company;
+      if (i == 0) {
+        selector.company_slots[selector.num_companies].range_min = 0;
+        selector.company_slots[selector.num_companies].range_max =
+            company->ad_balance;
+      } else {
+        selector.company_slots[selector.num_companies].range_min =
+            selector.total_balance;
+        selector.company_slots[selector.num_companies].range_max =
+            selector.total_balance + company->ad_balance;
+      }
+      selector.total_balance += company->ad_balance;
+      selector.num_companies++;
+    }
+  }
+
+  // printf("Total balance: %d\n", selector.total_balance);
+  // printf("NUM COMPANIES: %d\n", selector.num_companies);
+  // for (int i = 0; i < selector.num_companies; i++) {
+  //   printf("Company: %s\n Range: %d - %d\n",
+  //          selector.company_slots[i].company->company_name,
+  //          selector.company_slots[i].range_min,
+  //          selector.company_slots[i].range_max);
+  // }
+  struct Company *selected_company = get_random_company_in_range(selector);
+  free(selector.company_slots);
+  // free(selector.company_slots);
+  return selected_company;
+}
+
 void billboard_run(void) {
   struct Billboard billboard;
   billboard_prep(&billboard);
 
   while (1) {
-    struct Company *selected_company =
-        billboard_select_random_company(&billboard);
+    // struct Company *selected_company =
+    //     billboard_select_random_company(&billboard);
+    struct Company *selected_company = billboard_select_company(&billboard);
     billboard.active_company = *selected_company;
     lcd_clear();
     // Randomize company here.

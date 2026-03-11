@@ -12,6 +12,19 @@ struct Company {
   enum CompanyAdStrategy ad_strategy;
 };
 
+// Helpers for picking company from it's total balance
+struct CompanySlot {
+  struct Company *company;
+  int range_min;
+  int range_max;
+};
+
+struct CompanySelector {
+  struct CompanySlot *company_slots;
+  int num_companies;
+  int total_balance;
+};
+
 struct Company *company_create(char *name, int ad_balance,
                                enum CompanyAdStrategy ad_strategy);
 
