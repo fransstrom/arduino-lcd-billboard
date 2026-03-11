@@ -91,7 +91,6 @@ void billboard_prep(struct Billboard *billboard) {
 // Works, but need to sake the add_balance into account selecting companies
 // divide all but active company ad_balance (100) and randomize that and and
 // pick company that has that range.
-
 struct Company *
 billboard_select_random_company(const struct Billboard *billboard) {
 
