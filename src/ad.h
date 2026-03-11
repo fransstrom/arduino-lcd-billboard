@@ -15,8 +15,8 @@ struct Ad {
   enum AdStrategyRule ad_rule;
 };
 
-struct Ad *ad_create(char *text, enum Animation animation,
-                     enum AdStrategyRule ad_strategy);
+struct Ad ad_create(char *text, enum Animation animation,
+                    enum AdStrategyRule ad_strategy);
 void ad_run(const struct Ad *ad, char *company_name);
 
 // Move ad functions from LCD to here.
