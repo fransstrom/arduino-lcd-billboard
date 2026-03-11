@@ -47,90 +47,45 @@ void billboard_prep(struct Billboard *billboard) {
   billboard->num_companies = 0;
   billboard->companies = NULL;
 
-  struct Company sverte_petter;
-  sverte_petter.num_ads = 0;
-  sverte_petter.company_name = "Svartepetters AB";
-  sverte_petter.ad_balance = 1000;
-  sverte_petter.ad_collection = NULL;
-  sverte_petter.ad_strategy = TIME_BASED;
+  struct Company *sverte_petter =
+      company_create("Svartepetters AB", 900, TIME_BASED);
+  struct Company *ankan = company_create("Ankas pajer AB", 200, RANDOM);
 
-  struct Company ankan;
-  ankan.num_ads = 0;
-  ankan.company_name = "Ankas pajer AB";
-  ankan.ad_balance = 200;
-  ankan.ad_collection = NULL;
-  ankan.ad_strategy = RANDOM;
-
-  struct Company harry;
-  harry.num_ads = 0;
-  harry.company_name = "Hederlige Harry";
-  harry.ad_balance = 500;
-  harry.ad_collection = NULL;
-  harry.ad_strategy = RANDOM;
-
-  struct Company goofy;
-  goofy.num_ads = 0;
-  goofy.ad_collection = NULL;
-  goofy.ad_balance = 250;
-  goofy.company_name = "Detective Goofy";
-  goofy.ad_strategy = RANDOM;
+  struct Company *harry = company_create("Hederlige Harry", 500, RANDOM);
+  struct Company *goofy = company_create("Detective Goofy", 250, RANDOM);
 
   // NEW STRUCTS TO DO. Create inserts in billboard / company using mallocs
-  struct Ad petter;
-  petter.ad_text = "Bygga svart? Call Petter";
-  petter.animation = BLINK;
-  petter.ad_rule = ODD_MINUTES;
+  struct Ad *petter =
+      ad_create("Bygga svart? Call Petter", BLINK, EVEN_MINUTES);
+  struct Ad *petter2 = ad_create("Let Petter do the work!", BLINK, ODD_MINUTES);
 
-  struct Ad petter2;
-  petter2.ad_text = "Let Petter do the work!";
-  petter2.animation = BLINK;
-  petter2.ad_rule = EVEN_MINUTES;
+  struct Ad *anka = ad_create("Manson is eating all the pies!", NONE, DEFAULT);
+  struct Ad *anka2 = ad_create("Buy pies from Granny Anka", SCROLL, DEFAULT);
 
-  struct Ad anka;
-  anka.ad_text = "Manson is eating all the pies!";
-  anka.animation = NONE;
+  struct Ad *harry1 = ad_create("Buy your car at Harry's", SCROLL, DEFAULT);
+  struct Ad *harry2 = ad_create("Great Deals (for Harry)", NONE, DEFAULT);
+  struct Ad *harry3 = ad_create("Trusty Harry's cars", BLINK, DEFAULT);
 
-  struct Ad anka2;
-  anka2.ad_text = "Buy pies from Granny Anka";
-  anka2.animation = SCROLL;
+  struct Ad *goofy1 = ad_create("Mysteries? Call Goofy", NONE, DEFAULT);
+  struct Ad *goofy2 = ad_create("Goofy takes the cake!", NONE, DEFAULT);
 
-  struct Ad harry1;
-  harry1.ad_text = "Buy your car at Harry's";
-  harry1.animation = SCROLL;
+  company_add_ad(sverte_petter, petter);
+  company_add_ad(sverte_petter, petter2);
 
-  struct Ad harry2;
-  harry2.ad_text = "Great deals (for Harry)";
-  harry2.animation = NONE;
+  company_add_ad(ankan, anka);
+  company_add_ad(ankan, anka2);
 
-  struct Ad harry3;
-  harry3.ad_text = "Trusty Harry's cars";
-  harry3.animation = BLINK;
+  company_add_ad(harry, harry1);
+  company_add_ad(harry, harry2);
+  company_add_ad(harry, harry3);
 
-  struct Ad goofy1;
-  goofy1.ad_text = "Mysteries? Call Goofy!";
-  goofy1.animation = NONE;
+  company_add_ad(goofy, goofy1);
+  company_add_ad(goofy, goofy2);
 
-  struct Ad goofy2;
-  goofy2.ad_text = "Goofy takes the cake!";
-  goofy2.animation = NONE;
-
-  company_add_ad(&sverte_petter, &petter);
-  company_add_ad(&sverte_petter, &petter2);
-
-  company_add_ad(&ankan, &anka);
-  company_add_ad(&ankan, &anka2);
-
-  company_add_ad(&harry, &harry1);
-  company_add_ad(&harry, &harry2);
-  company_add_ad(&harry, &harry3);
-
-  company_add_ad(&goofy, &goofy1);
-  company_add_ad(&goofy, &goofy2);
-
-  billboard_add_company(billboard, &sverte_petter);
-  billboard_add_company(billboard, &ankan);
-  billboard_add_company(billboard, &goofy);
-  billboard_add_company(billboard, &harry);
+  billboard_add_company(billboard, sverte_petter);
+  billboard_add_company(billboard, ankan);
+  billboard_add_company(billboard, goofy);
+  billboard_add_company(billboard, harry);
 }
 
 // Works, but need to sake the add_balance into account selecting companies

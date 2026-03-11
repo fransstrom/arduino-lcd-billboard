@@ -7,7 +7,7 @@ extern const millis_t AD_RUNTIME_MS;
 extern const int AD_COST_PER_SECOND;
 
 enum Animation { BLINK, SCROLL, NONE };
-enum AdStrategyRule { EVEN_MINUTES, ODD_MINUTES };
+enum AdStrategyRule { EVEN_MINUTES, ODD_MINUTES, DEFAULT };
 
 struct Ad {
   char *ad_text;
@@ -15,6 +15,8 @@ struct Ad {
   enum AdStrategyRule ad_rule;
 };
 
+struct Ad *ad_create(char *text, enum Animation animation,
+                     enum AdStrategyRule ad_strategy);
 void ad_run(const struct Ad *ad, char *company_name);
 
 // Move ad functions from LCD to here.

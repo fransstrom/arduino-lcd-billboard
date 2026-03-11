@@ -12,6 +12,9 @@ struct Company {
   enum CompanyAdStrategy ad_strategy;
 };
 
+struct Company *company_create(char *name, int ad_balance,
+                               enum CompanyAdStrategy ad_strategy);
+
 void company_init_ad(struct Company *company);
 void company_ad_charge(struct Company *company);
 bool company_add_ad(struct Company *company, struct Ad *ad);

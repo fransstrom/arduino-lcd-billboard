@@ -2,11 +2,29 @@
 #include "lcd.h"
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <util/delay.h>
 
 const millis_t AD_RUNTIME_MS = 2000;
 const int AD_COST_PER_SECOND = 3;
 const int AD_COST = 100;
+
+struct Ad *ad_create(char *text, enum Animation animation,
+                     enum AdStrategyRule ad_rule) {
+  struct Ad *ad = malloc(sizeof(struct Ad));
+  if (!ad) {
+    printf("failed to create ad");
+  }
+  ad->ad_text = text;
+  ad->animation = animation;
+  if (!ad_rule) {
+    printf("setting ad to default");
+    ad->ad_rule = DEFAULT;
+  }
+  ad->ad_rule = ad_rule;
+
+  return ad;
+}
 
 void ad_lcd_scroll(const struct Ad *ad, char *company_name) {
 
