@@ -6,7 +6,7 @@
 
 const millis_t AD_RUNTIME_MS = 2000;
 const int AD_COST_PER_SECOND = 3;
-const int AD_COST = 100;
+const int AD_COST = AD_COST_PER_SECOND * (AD_RUNTIME_MS / 1000);
 
 struct Ad ad_create(char *text, enum Animation animation,
                     enum AdStrategyRule ad_rule) {

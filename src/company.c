@@ -19,6 +19,7 @@ struct Company *company_create(char *name, int ad_balance,
   company->ad_strategy = ad_strategy;
   company->ad_collection = NULL;
   company->num_ads = 0;
+  company->company_type = CUSTOMER;
 
   return company;
 }
@@ -39,6 +40,7 @@ bool company_add_ad(struct Company *company, struct Ad *ad) {
 }
 
 void company_ad_charge(struct Company *company) {
+  printf("AD_COST %d\n", AD_COST);
   company->ad_balance -= AD_COST;
 }
 

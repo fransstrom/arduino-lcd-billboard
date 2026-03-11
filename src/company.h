@@ -3,6 +3,7 @@
 #include "billboard.h"
 
 enum CompanyAdStrategy { TIME_BASED, RANDOM };
+enum CompanyType { CUSTOMER, OWNER };
 
 struct Company {
   char *company_name;
@@ -10,6 +11,7 @@ struct Company {
   struct Ad *ad_collection;
   int num_ads;
   enum CompanyAdStrategy ad_strategy;
+  enum CompanyType company_type;
 };
 
 // Helpers for picking company from it's total balance

@@ -49,8 +49,13 @@ void billboard_prep(struct Billboard *billboard) {
   billboard->num_companies = 0;
   billboard->companies = NULL;
 
+  struct Company *frans_billboards =
+      company_create("Frasses Reklam AB", 1000, RANDOM);
+  frans_billboards->company_type = OWNER;
+
   struct Company *sverte_petter =
       company_create("Svartepetters AB", 900, TIME_BASED);
+
   struct Company *ankan = company_create("Ankas pajer AB", 200, RANDOM);
 
   struct Company *harry = company_create("Hederlige Harry", 500, RANDOM);
@@ -58,6 +63,9 @@ void billboard_prep(struct Billboard *billboard) {
 
   // Allocating memory for ads in company_add_ad since Ad is never used outside
   // of company context.
+
+  struct Ad frasse = ad_create("Your ad here = $$$$$", BLINK, DEFAULT);
+
   struct Ad petter = ad_create("Bygga svart? Call Petter", BLINK, EVEN_MINUTES);
   struct Ad petter2 = ad_create("Let Petter do the work!", BLINK, ODD_MINUTES);
 
@@ -71,6 +79,7 @@ void billboard_prep(struct Billboard *billboard) {
   struct Ad goofy1 = ad_create("Mysteries? Call Goofy", NONE, DEFAULT);
   struct Ad goofy2 = ad_create("Goofy takes the cake!", NONE, DEFAULT);
 
+  company_add_ad(frans_billboards, &frasse);
   company_add_ad(sverte_petter, &petter);
   company_add_ad(sverte_petter, &petter2);
 
@@ -84,6 +93,7 @@ void billboard_prep(struct Billboard *billboard) {
   company_add_ad(goofy, &goofy1);
   company_add_ad(goofy, &goofy2);
 
+  billboard_add_company(billboard, frans_billboards);
   billboard_add_company(billboard, sverte_petter);
   billboard_add_company(billboard, ankan);
   billboard_add_company(billboard, goofy);
@@ -108,7 +118,7 @@ billboard_select_random_company(const struct Billboard *billboard) {
 
 struct Company *get_random_company_in_range(struct CompanySelector selector) {
   int rand_num = rand() % selector.total_balance;
-  printf("RANGE %d", rand_num);
+  printf("RANGE %d \n", rand_num);
   for (int i = 0; i < selector.num_companies; i++) {
     if (rand_num >= selector.company_slots[i].range_min &&
         rand_num < selector.company_slots[i].range_max) {
@@ -120,15 +130,15 @@ struct Company *get_random_company_in_range(struct CompanySelector selector) {
 
 struct Company *billboard_select_company(const struct Billboard *billboard) {
   struct CompanySelector selector;
+  struct Company *selected_company;
+
   selector.num_companies = 0;
   selector.total_balance = 0;
   selector.company_slots =
       malloc(sizeof(struct CompanySlot) * billboard->num_companies);
 
   struct Company *company;
-  printf("Total billboard companies: %d", billboard->num_companies);
   for (int i = 0; i < billboard->num_companies; i++) {
-    printf("should only run 4 times or so");
     company = &billboard->companies[i];
     if (company->ad_balance >= AD_COST &&
         company->company_name != billboard->active_company.company_name) {
@@ -147,6 +157,15 @@ struct Company *billboard_select_company(const struct Billboard *billboard) {
       selector.num_companies++;
     }
   }
+  // Falling back to owner company all balance is insufficient
+  if (selector.num_companies == 0) {
+    // select to show ad for billboard company
+    for (int i = 0; i < billboard->num_companies; i++) {
+      if (billboard->companies[i].company_type == OWNER) {
+        return &billboard->companies[i];
+      }
+    }
+  }
 
   // printf("Total balance: %d\n", selector.total_balance);
   // printf("NUM COMPANIES: %d\n", selector.num_companies);
@@ -156,7 +175,7 @@ struct Company *billboard_select_company(const struct Billboard *billboard) {
   //          selector.company_slots[i].range_min,
   //          selector.company_slots[i].range_max);
   // }
-  struct Company *selected_company = get_random_company_in_range(selector);
+  selected_company = get_random_company_in_range(selector);
   free(selector.company_slots);
   // free(selector.company_slots);
   return selected_company;
