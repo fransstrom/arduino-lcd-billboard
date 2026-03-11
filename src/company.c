@@ -73,3 +73,15 @@ void company_init_ad(struct Company *company) {
   }
   ad_run(&ad, company->company_name);
 }
+
+struct Company *company_get_from_selector(struct CompanySelector selector) {
+  int rand_num = rand() % selector.total_balance;
+  printf("RANGE %d \n", rand_num);
+  for (int i = 0; i < selector.num_companies; i++) {
+    if (rand_num >= selector.company_slots[i].range_min &&
+        rand_num < selector.company_slots[i].range_max) {
+      return selector.company_slots[i].company;
+    }
+  }
+  return selector.company_slots[0].company;
+}
