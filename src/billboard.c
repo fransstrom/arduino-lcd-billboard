@@ -159,6 +159,16 @@ struct Company *billboard_select_company(const struct Billboard *billboard) {
     }
   }
 
+  // printf("Total balance: %d\n", selector.total_balance);
+  // printf("NUM COMPANIES: %d\n", selector.num_companies);
+  // for (int i = 0; i < selector.num_companies; i++) {
+  //   printf("Company: %s\n Range: %d - %d\n",
+  //          selector.company_slots[i].company->company_name,
+  //          selector.company_slots[i].range_min,
+  //          selector.company_slots[i].range_max);
+  // }
+  //
+
   selected_company = company_get_from_selector(selector);
   free(selector.company_slots);
   return selected_company;
