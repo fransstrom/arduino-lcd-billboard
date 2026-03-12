@@ -12,3 +12,5 @@ Wokwi: https://wokwi.com/projects/456396662970036225
 - [x] Create company function.
 - [x] declare function in headerfiles (billboard.h)
 - [x] break out function into separate files (company.h / ad.h etc)
+- [ ] Refactor billboard
+- [ ] 
