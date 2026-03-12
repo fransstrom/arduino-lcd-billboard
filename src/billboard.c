@@ -55,16 +55,15 @@ void billboard_prep(struct Billboard *billboard) {
 
   struct Company *sverte_petter =
       company_create("Svartepetters AB", 900, TIME_BASED);
-
   struct Company *ankan = company_create("Ankas pajer AB", 200, RANDOM);
-
   struct Company *harry = company_create("Hederlige Harry", 500, RANDOM);
   struct Company *goofy = company_create("Detective Goofy", 250, RANDOM);
 
   // Allocating memory for ads in company_add_ad since Ad is never used outside
   // of company context.
-
   struct Ad frasse = ad_create("Your ad here = $$$$$", BLINK, DEFAULT);
+  struct Ad frasse2 =
+      ad_create("Want your ad here? call us on 0414-30395", SCROLL, DEFAULT);
 
   struct Ad petter = ad_create("Bygga svart? Call Petter", BLINK, EVEN_MINUTES);
   struct Ad petter2 = ad_create("Let Petter do the work!", BLINK, ODD_MINUTES);
@@ -80,6 +79,8 @@ void billboard_prep(struct Billboard *billboard) {
   struct Ad goofy2 = ad_create("Goofy takes the cake!", NONE, DEFAULT);
 
   company_add_ad(frans_billboards, &frasse);
+  company_add_ad(frans_billboards, &frasse2);
+
   company_add_ad(sverte_petter, &petter);
   company_add_ad(sverte_petter, &petter2);
 
