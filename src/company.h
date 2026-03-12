@@ -3,6 +3,7 @@
 #include "billboard.h"
 
 enum CompanyAdStrategy { TIME_BASED, RANDOM };
+enum CompanyType { CUSTOMER, OWNER };
 
 struct Company {
   char *company_name;
@@ -10,6 +11,20 @@ struct Company {
   struct Ad *ad_collection;
   int num_ads;
   enum CompanyAdStrategy ad_strategy;
+  enum CompanyType company_type;
+};
+
+// Helpers for picking company from it's total balance
+struct CompanySlot {
+  struct Company *company;
+  int range_min;
+  int range_max;
+};
+
+struct CompanySelector {
+  struct CompanySlot *company_slots;
+  int num_companies;
+  int total_balance;
 };
 
 struct Company *company_create(char *name, int ad_balance,
@@ -18,5 +33,8 @@ struct Company *company_create(char *name, int ad_balance,
 void company_init_ad(struct Company *company);
 void company_ad_charge(struct Company *company);
 bool company_add_ad(struct Company *company, struct Ad *ad);
+struct Company *company_get_from_selector(struct CompanySelector selector);
+struct CompanySelector *
+company_create_selector(struct CompanySelector *selector);
 
 #endif // !COMPANY_H
