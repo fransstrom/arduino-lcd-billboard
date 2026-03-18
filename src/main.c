@@ -7,11 +7,8 @@
 #include <util/delay.h>
 
 int main(void) {
-
   millis_init();
   sei();
-  lcd_init();
-  lcd_clear();
   init_serial();
   billboard_run();
   return 0;

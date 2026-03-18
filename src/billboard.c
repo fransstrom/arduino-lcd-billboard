@@ -50,9 +50,8 @@ void billboard_prep(struct Billboard *billboard) {
   billboard->companies = NULL;
 
   struct Company *frans_billboards =
-      company_create("Frasses Reklam AB", 1000, RANDOM);
+      company_create("Frans Reklam AB", 1000, RANDOM);
   frans_billboards->company_type = OWNER;
-
   struct Company *sverte_petter =
       company_create("Svartepetters AB", 900, TIME_BASED);
   struct Company *ankan = company_create("Ankas pajer AB", 200, RANDOM);
@@ -160,15 +159,14 @@ struct Company *billboard_select_company(const struct Billboard *billboard) {
     }
   }
 
-  // printf("Total balance: %d\n", selector.total_balance);
-  // printf("NUM COMPANIES: %d\n", selector.num_companies);
-  // for (int i = 0; i < selector.num_companies; i++) {
-  //   printf("Company: %s\n Range: %d - %d\n",
-  //          selector.company_slots[i].company->company_name,
-  //          selector.company_slots[i].range_min,
-  //          selector.company_slots[i].range_max);
-  // }
-  //
+  printf("Total balance: %d\n", selector.total_balance);
+  printf("NUM COMPANIES: %d\n", selector.num_companies);
+  for (int i = 0; i < selector.num_companies; i++) {
+    printf("Company: %s\n Range: %d - %d\n",
+           selector.company_slots[i].company->company_name,
+           selector.company_slots[i].range_min,
+           selector.company_slots[i].range_max);
+  }
 
   selected_company = company_get_from_selector(selector);
   free(selector.company_slots);
@@ -176,6 +174,9 @@ struct Company *billboard_select_company(const struct Billboard *billboard) {
 }
 
 void billboard_run(void) {
+  lcd_init();
+  lcd_clear();
+
   struct Billboard billboard;
   billboard_prep(&billboard);
 

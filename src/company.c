@@ -7,7 +7,6 @@
 #include <stdlib.h>
 struct Company *company_create(char *name, int ad_balance,
                                enum CompanyAdStrategy ad_strategy) {
-
   assert(name != NULL);
   struct Company *company = malloc(sizeof(struct Company));
   if (!company) {
@@ -40,15 +39,15 @@ bool company_add_ad(struct Company *company, struct Ad *ad) {
 }
 
 void company_ad_charge(struct Company *company) {
-  printf("AD_COST %d\n", AD_COST);
+  // printf("AD_COST %d\n", AD_COST);
   company->ad_balance -= AD_COST;
 }
 
 void company_init_ad(struct Company *company) {
-  company_ad_charge(company);
+  // company_ad_charge(company);
   struct Ad ad;
   if (company->ad_strategy == TIME_BASED) {
-    printf("AD strat TIME\n");
+    // printf("AD strat TIME\n");
     for (int i = 0; i < company->num_ads; i++) {
       if (is_even_minute() &&
           company->ad_collection[i].ad_rule == EVEN_MINUTES) {
@@ -64,9 +63,8 @@ void company_init_ad(struct Company *company) {
         break;
       }
     }
-
   } else {
-    printf("AD strat RAND\n");
+    // printf("AD strat RAND\n");
     // Select company add here by random / rules.
     int rand_index = rand() % (company->num_ads);
     ad = company->ad_collection[rand_index];

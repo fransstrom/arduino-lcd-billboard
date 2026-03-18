@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <util/delay.h>
 
-const millis_t AD_RUNTIME_MS = 2000;
+const millis_t AD_RUNTIME_MS = 5000;
 const int AD_COST_PER_SECOND = 30;
 const int AD_COST = AD_COST_PER_SECOND * (AD_RUNTIME_MS / 1000);
 
@@ -49,7 +49,7 @@ void ad_lcd_scroll(const struct Ad *ad, char *company_name) {
   while (millis_get() - start <= AD_RUNTIME_MS) { // Oändlig loop!
     lcd_set_cursor(0, 1);
 
-    printf("%s millis_t: %lu\n", company_name, millis_get() - start);
+    // printf("%s millis_t: %lu\n", company_name, millis_get() - start);
     // printf("%lu\n", millis_get() - time_in_func);
     // Visa 16 tecken från aktuell offset
     for (uint8_t i = 0; i < 16; i++) {
