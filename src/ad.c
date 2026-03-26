@@ -1,3 +1,13 @@
+/**
+ * @file ad.c
+ * @brief Advertisement display implementation
+ *
+ * Handles ad creation and three display animation types:
+ * - SCROLL: Text scrolls horizontally on bottom row
+ * - BLINK: Text blinks on/off
+ * - NONE: Static text display
+ */
+
 #include "ad.h"
 #include "lcd.h"
 #include <stdbool.h>
@@ -8,21 +18,31 @@ const millis_t AD_RUNTIME_MS = 5000;
 const int AD_COST_PER_SECOND = 30;
 const int AD_COST = AD_COST_PER_SECOND * (AD_RUNTIME_MS / 1000);
 
+/**
+ * @brief Creates a new advertisement
+ * @param text     Advertisement text content
+ * @param animation Animation type (BLINK, SCROLL, NONE)
+ * @param ad_rule  Time-based rule (EVEN_MINUTES, ODD_MINUTES, DEFAULT)
+ * @return Created Ad structure
+ */
 struct Ad ad_create(char *text, enum Animation animation,
                     enum AdStrategyRule ad_rule) {
   struct Ad ad;
   ad.ad_text = text;
   ad.animation = animation;
-  if (!ad_rule) {
-    printf("setting ad to default");
-    ad.ad_rule = DEFAULT;
-  }
-
   ad.ad_rule = ad_rule;
 
   return ad;
 }
 
+/**
+ * @brief Displays ad with scrolling animation
+ * @param ad           Ad to display
+ * @param company_name Company name to show on top row
+ *
+ * Shows company name on row 0, scrolls ad text on row 1.
+ * Text scrolls continuously for AD_RUNTIME_MS (5 seconds).
+ */
 void ad_lcd_scroll(const struct Ad *ad, char *company_name) {
 
   volatile millis_t start = millis_get();
@@ -66,6 +86,13 @@ void ad_lcd_scroll(const struct Ad *ad, char *company_name) {
   printf("LOOP SCROLL_AD DONE\n\n");
 }
 
+/**
+ * @brief Displays ad with blinking animation
+ * @param ad Ad to display
+ *
+ * Text blinks on/off every 500ms for AD_RUNTIME_MS.
+ * Long text is split across both LCD rows at word boundary near column 16.
+ */
 void ad_lcd_blink(const struct Ad *ad) {
   volatile millis_t start = millis_get();
   bool text_visible = true;
@@ -116,6 +143,13 @@ void ad_lcd_blink(const struct Ad *ad) {
   }
 }
 
+/**
+ * @brief Displays ad with static (no animation)
+ * @param ad Ad to display
+ *
+ * Text is displayed statically for AD_RUNTIME_MS.
+ * Long text is split across both LCD rows at word boundary near column 16.
+ */
 void ad_lcd_static(const struct Ad *ad) {
   volatile millis_t start = millis_get();
 
@@ -153,6 +187,11 @@ void ad_lcd_static(const struct Ad *ad) {
   }
 }
 
+/**
+ * @brief Routes ad to appropriate display function
+ * @param ad           Ad to display
+ * @param company_name Company name for scroll display
+ */
 void ad_run(const struct Ad *ad, char *company_name) {
   switch (ad->animation) {
   case SCROLL:

@@ -1,3 +1,11 @@
+/**
+ * @file billboard.c
+ * @brief Billboard advertising system implementation
+ *
+ * Manages companies, handles weighted random company selection based on
+ * advertising balance, and coordinates ad display on LCD.
+ */
+
 #include "ad.h"
 #include "company.h"
 #include "lcd.h"
@@ -8,14 +16,27 @@
 #include <string.h>
 #include <util/delay.h>
 
+/**
+ * @brief Billboard structure holding company collection
+ *
+ * Uses a dynamic array to store companies. The active_company field
+ * tracks the last displayed company to avoid showing the same company
+ * twice in a row.
+ */
 struct Billboard {
-  struct Company *companies;     // Set
-  struct Company active_company; // To not select same company twice in a row
-  int num_companies;
+  struct Company *companies;     /**< Dynamic array of companies */
+  struct Company active_company; /**< Last selected company */
+  int num_companies;             /**< Current number of companies */
 };
 
+/**
+ * @brief Adds a company to the billboard
+ * @param billboard Pointer to billboard instance
+ * @param company   Company to add
+ * @return true if successful, false on allocation failure
+ */
 bool billboard_add_company(struct Billboard *billboard,
-                           struct Company *company) {
+                            struct Company *company) {
   assert(billboard != NULL);
   assert(company != NULL);
   struct Company *companies =
@@ -30,21 +51,40 @@ bool billboard_add_company(struct Billboard *billboard,
   return true;
 }
 
+/**
+ * @brief Removes a company from the billboard
+ * @param billboard Pointer to billboard instance
+ * @param company   Company to remove
+ * @return true if found and removed, false if not found
+ *
+ * Removal is done by swapping with the last element and decrementing count.
+ * This maintains O(1) removal but does not preserve order.
+ */
 bool billboard_remove_company(struct Billboard *billboard,
                               struct Company *company) {
   assert(billboard != NULL);
   assert(company != NULL);
   for (int i = 0; i < billboard->num_companies; i++) {
-    if (billboard->companies[i].company_name == company->company_name) {
+    if (strcmp(billboard->companies[i].company_name,
+               company->company_name) == 0) {
       billboard->companies[i] =
-          billboard->companies[billboard->num_companies + 1];
-      billboard--;
+          billboard->companies[billboard->num_companies - 1];
+      billboard->num_companies--;
       return true;
     }
   }
   return false;
 }
 
+/**
+ * @brief Initializes billboard with demo companies and ads
+ * @param billboard Pointer to billboard to initialize
+ *
+ * Creates 5 demo companies with different advertising strategies:
+ * - Frans Reklam AB (OWNER): Fallback company with high balance
+ * - Svartepetters AB (TIME_BASED): Shows ads based on odd/even minutes
+ * - Ankas pajer AB, Hederlige Harry, Detective Goofy: RANDOM strategy
+ */
 void billboard_prep(struct Billboard *billboard) {
   billboard->num_companies = 0;
   billboard->companies = NULL;
@@ -116,6 +156,17 @@ billboard_select_random_company(const struct Billboard *billboard) {
   return selected;
 }
 
+/**
+ * @brief Builds a weighted company selector for random selection
+ * @param billboard Source billboard with companies
+ * @param selector  Output selector to populate
+ *
+ * Algorithm: Creates slots where each company's weight equals their ad_balance.
+ * Example: If balances are [100, 200, 50], ranges become [0-100], [100-300], [300-350].
+ * A random number in [0, 350) selects a company proportionally to their balance.
+ * Only companies with sufficient balance (>= AD_COST) and not the active company
+ * are included in the selector.
+ */
 void billboard_build_company_selector(const struct Billboard *billboard,
                                       struct CompanySelector *selector) {
   selector->num_companies = 0;
@@ -127,7 +178,8 @@ void billboard_build_company_selector(const struct Billboard *billboard,
   for (int i = 0; i < billboard->num_companies; i++) {
     company = &billboard->companies[i];
     if (company->ad_balance >= AD_COST &&
-        company->company_name != billboard->active_company.company_name) {
+        strcmp(company->company_name,
+               billboard->active_company.company_name) != 0) {
       struct CompanySlot company_slot;
       company_slot.company = company;
       if (selector->num_companies == 0) {
@@ -144,6 +196,15 @@ void billboard_build_company_selector(const struct Billboard *billboard,
   }
 }
 
+/**
+ * @brief Selects a company to display based on weighted random selection
+ * @param billboard Billboard to select from
+ * @return Selected company, falls back to OWNER company if no others qualify
+ *
+ * Builds a company selector using billboard_build_company_selector, then
+ * uses company_get_from_selector to perform weighted random selection.
+ * If no companies have sufficient balance, returns the OWNER company as fallback.
+ */
 struct Company *billboard_select_company(const struct Billboard *billboard) {
   struct CompanySelector selector;
   struct Company *selected_company;
@@ -173,6 +234,15 @@ struct Company *billboard_select_company(const struct Billboard *billboard) {
   return selected_company;
 }
 
+/**
+ * @brief Main billboard loop - runs indefinitely
+ *
+ * Initializes LCD and billboard, then enters infinite loop:
+ * 1. Selects a company using weighted random selection
+ * 2. Stores it as active_company
+ * 3. Clears LCD
+ * 4. Initializes and runs the ad display
+ */
 void billboard_run(void) {
   lcd_init();
   lcd_clear();
