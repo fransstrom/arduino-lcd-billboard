@@ -102,11 +102,13 @@ void ad_lcd_blink(const struct Ad *ad) {
         lcd_write(idx < text_len ? ad->ad_text[idx] : ' ');
       }
     } else {
-      for (uint8_t i = 0; i < 16; i++)
+      for (uint8_t i = 0; i < 16; i++) {
         lcd_write(' ');
+      }
       lcd_set_cursor(0, 1);
-      for (uint8_t i = 0; i < 16; i++)
+      for (uint8_t i = 0; i < 16; i++) {
         lcd_write(' ');
+      }
     }
 
     text_visible = !text_visible;

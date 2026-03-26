@@ -269,15 +269,6 @@ void lcd_continuous_scroll(char *text, uint8_t row) {
 
     offset = (offset + 1) % text_len;
 
-    // Following snippet if for having first row static and second row scrolling
-    //  lcd_set_cursor(0, 0);
-    //
-    //  // Visa 16 tecken från aktuell offset
-    //  for (uint8_t i = 0; i < 16; i++) {
-    //    uint8_t idx = (0 + i) % text_len;
-    //    lcd_write(buffer[idx]);
-    //  }
-
     // Visa 16 tecken från aktuell offset
     _delay_ms(LCD_SCROLL_DELAY);
 
