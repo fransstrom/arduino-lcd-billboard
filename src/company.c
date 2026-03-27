@@ -7,7 +7,6 @@
 
 #include "company.h"
 #include "ad.h"
-#include "lcd.h"
 #include "millis_helper.h"
 #include <assert.h>
 #include <stdio.h>

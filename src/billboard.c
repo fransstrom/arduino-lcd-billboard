@@ -36,7 +36,7 @@ struct Billboard {
  * @return true if successful, false on allocation failure
  */
 bool billboard_add_company(struct Billboard *billboard,
-                            struct Company *company) {
+                           struct Company *company) {
   assert(billboard != NULL);
   assert(company != NULL);
   struct Company *companies =
@@ -65,8 +65,8 @@ bool billboard_remove_company(struct Billboard *billboard,
   assert(billboard != NULL);
   assert(company != NULL);
   for (int i = 0; i < billboard->num_companies; i++) {
-    if (strcmp(billboard->companies[i].company_name,
-               company->company_name) == 0) {
+    if (strcmp(billboard->companies[i].company_name, company->company_name) ==
+        0) {
       billboard->companies[i] =
           billboard->companies[billboard->num_companies - 1];
       billboard->num_companies--;
@@ -162,10 +162,10 @@ billboard_select_random_company(const struct Billboard *billboard) {
  * @param selector  Output selector to populate
  *
  * Algorithm: Creates slots where each company's weight equals their ad_balance.
- * Example: If balances are [100, 200, 50], ranges become [0-100], [100-300], [300-350].
- * A random number in [0, 350) selects a company proportionally to their balance.
- * Only companies with sufficient balance (>= AD_COST) and not the active company
- * are included in the selector.
+ * Example: If balances are [100, 200, 50], ranges become [0-100], [100-300],
+ * [300-350]. A random number in [0, 350) selects a company proportionally to
+ * their balance. Only companies with sufficient balance (>= AD_COST) and not
+ * the active company are included in the selector.
  */
 void billboard_build_company_selector(const struct Billboard *billboard,
                                       struct CompanySelector *selector) {
@@ -178,8 +178,8 @@ void billboard_build_company_selector(const struct Billboard *billboard,
   for (int i = 0; i < billboard->num_companies; i++) {
     company = &billboard->companies[i];
     if (company->ad_balance >= AD_COST &&
-        strcmp(company->company_name,
-               billboard->active_company.company_name) != 0) {
+        strcmp(company->company_name, billboard->active_company.company_name) !=
+            0) {
       struct CompanySlot company_slot;
       company_slot.company = company;
       if (selector->num_companies == 0) {
@@ -203,7 +203,8 @@ void billboard_build_company_selector(const struct Billboard *billboard,
  *
  * Builds a company selector using billboard_build_company_selector, then
  * uses company_get_from_selector to perform weighted random selection.
- * If no companies have sufficient balance, returns the OWNER company as fallback.
+ * If no companies have sufficient balance, returns the OWNER company as
+ * fallback.
  */
 struct Company *billboard_select_company(const struct Billboard *billboard) {
   struct CompanySelector selector;
