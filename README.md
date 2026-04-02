@@ -1,4 +1,7 @@
 # Documentation
+Wokwi "digital twin": 
+https://wokwi.com/projects/456396662970036225
+
 
 ## Files and functionality overview
 | File | Functionality |
@@ -10,15 +13,20 @@
 
 ## Structs
 ### struct Billboard
-- Encapsulated
+- Encapsulated type
 - Owns the list of companies and keeps track of how many companies have been added with num_companies attribute   
 - Tracks active_company to avoid showing the same company twice in a row.
 
+### struct Company
+- Contains ad_balance for weighted selection.
+- Stores array of ads.
+- Has enum company_type to determine if company is a customer or owner of the billboard. Can be used for future to add diffrent type as "VIP" to handle usecaseslike discounts or whatever.
 
+### struct Ad
+- Contains ad_text whih will be displayed on the LCD.
+- enum Animation options SCROLL, BLINK or NONE.
+- enum AdStrategyRule to determine prefered ad selection (EVEN/ODD_MINUTES or random) if company has a specific CompanyAdStrategy.
 
-
-Wokwi: 
-https://wokwi.com/projects/456396662970036225
 
 
 
