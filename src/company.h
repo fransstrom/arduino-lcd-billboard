@@ -1,6 +1,8 @@
 #ifndef COMPANY_H
 #define COMPANY_H
-#include "billboard.h"
+
+#include "ad.h"
+#include "stdbool.h"
 
 enum CompanyAdStrategy { TIME_BASED, RANDOM };
 enum CompanyType { CUSTOMER, OWNER };

@@ -1,3 +1,6 @@
+#ifndef LCD_H
+#define LCD_H
+
 #include <avr/io.h>
 #define LCD_PORT PORTD
 #define LCD_DDR DDRD
@@ -84,3 +87,5 @@ void lcd_puts(char *string);
 void lcd_printf(char *format, ...);
 
 void lcd_autoscroll_text(char *text, uint8_t row);
+
+#endif /* LCD_H */
