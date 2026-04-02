@@ -30,21 +30,6 @@ bool billboard_add_company(struct Billboard *billboard,
   return true;
 }
 
-bool billboard_remove_company(struct Billboard *billboard,
-                              struct Company *company) {
-  assert(billboard != NULL);
-  assert(company != NULL);
-  for (int i = 0; i < billboard->num_companies; i++) {
-    if (billboard->companies[i].company_name == company->company_name) {
-      billboard->companies[i] =
-          billboard->companies[billboard->num_companies + 1];
-      billboard--;
-      return true;
-    }
-  }
-  return false;
-}
-
 void billboard_prep(struct Billboard *billboard) {
   billboard->num_companies = 0;
   billboard->companies = NULL;

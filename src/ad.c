@@ -143,7 +143,7 @@ void ad_lcd_static(const struct Ad *ad) {
     lcd_write(idx < text_len ? ad->ad_text[idx] : ' ');
   }
 
-  //"sleep" 20 seconds
+  // busy-wait 20 seconds
   while (millis_get() - start <= AD_RUNTIME_MS) {
   }
 }
