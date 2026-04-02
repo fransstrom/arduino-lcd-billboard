@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <util/delay.h>
 
-const millis_t AD_RUNTIME_MS = 5000;
+const millis_t AD_RUNTIME_MS = 20000;
 const int AD_COST_PER_SECOND = 30;
 const int AD_COST = AD_COST_PER_SECOND * (AD_RUNTIME_MS / 1000);
 
