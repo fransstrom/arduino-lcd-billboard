@@ -1,8 +1,13 @@
-This is built upon our techers template, controlling LCD.
-The LCD difference between wokwi and the physical was the V0 needed to be connected to the ground.  
+# Documentation
 
+## Files and functionality
+| File | Functionality |
+|------|---------------|
+| billboard.c | Main file for the system which preps and running the main program loop - handles company ads|
 Wokwi: 
 https://wokwi.com/projects/456396662970036225
+
+
 
 # TODO
 - [x] Real struct of billboard. company, ads blinking animation, 
@@ -12,7 +17,7 @@ https://wokwi.com/projects/456396662970036225
 - [x] Create company function.
 - [x] declare function in headerfiles (billboard.h)
 - [x] break out function into separate files (company.h / ad.h etc)
-- [ ] Refactor billboard
+- [x] Refactor billboard
 
 
 
