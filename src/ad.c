@@ -13,11 +13,6 @@ struct Ad ad_create(char *text, enum Animation animation,
   struct Ad ad;
   ad.ad_text = text;
   ad.animation = animation;
-  if (!ad_rule) {
-    printf("setting ad to default");
-    ad.ad_rule = DEFAULT;
-  }
-
   ad.ad_rule = ad_rule;
 
   return ad;
