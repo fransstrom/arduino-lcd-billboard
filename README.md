@@ -1,3 +1,5 @@
+Repo:
+https://github.com/fransstrom/arduino-lcd-billboard
 # Documentation
 Wokwi "digital twin": 
 https://wokwi.com/projects/456396662970036225
