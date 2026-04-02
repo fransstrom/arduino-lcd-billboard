@@ -3,10 +3,20 @@
 ## Files and functionality overview
 | File | Functionality |
 |------|---------------|
-| billboard.c | Main file for the system which preps and running the main program loop - handles company ads|
+| billboard.c | Main file for the system which preps and running the main program loop - handles & selects company ads|
 | company.c | Company data and weighted random select |
 | ad.c | Display logics and handles ad_rules to display different types of ad (blinking, scrolling, static) |
 | millis_helper.c | Determines if billboard is on odd/even minute cycle |
+
+## Structs
+### struct Billboard
+- Encapsulated
+- Owns the list of companies and keeps track of how many companies have been added with num_companies attribute   
+- Tracks active_company to avoid showing the same company twice in a row.
+
+
+
+
 Wokwi: 
 https://wokwi.com/projects/456396662970036225
 

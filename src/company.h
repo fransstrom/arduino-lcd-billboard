@@ -34,7 +34,5 @@ void company_init_ad(struct Company *company);
 void company_ad_charge(struct Company *company);
 bool company_add_ad(struct Company *company, struct Ad *ad);
 struct Company *company_get_from_selector(struct CompanySelector selector);
-struct CompanySelector *
-company_create_selector(struct CompanySelector *selector);
 
 #endif // !COMPANY_H
