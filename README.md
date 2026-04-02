@@ -35,8 +35,8 @@ https://wokwi.com/projects/456396662970036225
 - Contains array of CompanySlot, num_companies and total_balance to make weighted selection possible from the CompanySlot array ranges. Used in function billboard_select_company().
 
 ## Possible improvements
-In this project there is multiple place where malloc is being used. This could cause heap fragmentation and unpredictable execution times. Since the memory resources are limited it would be better to use stack allocation. 
-
+### Memory allocation
+In this project there is multiple place where malloc & realloc is being used. This could cause heap fragmentation and unpredictable execution times. Since the memory resources are limited it would be better to use stack allocation since the number of companies and ads are known at compile time. This would ensure deterministic memory access and reduce code complexity. 
 
 
 
