@@ -1,9 +1,12 @@
 # Documentation
 
-## Files and functionality
+## Files and functionality overview
 | File | Functionality |
 |------|---------------|
 | billboard.c | Main file for the system which preps and running the main program loop - handles company ads|
+| company.c | Company data and weighted random select |
+| ad.c | Display logics and handles ad_rules to display different types of ad (blinking, scrolling, static) |
+| millis_helper.c | Determines if billboard is on odd/even minute cycle |
 Wokwi: 
 https://wokwi.com/projects/456396662970036225
 
