@@ -27,6 +27,13 @@ https://wokwi.com/projects/456396662970036225
 - enum Animation options SCROLL, BLINK or NONE.
 - enum AdStrategyRule to determine prefered ad selection (EVEN/ODD_MINUTES or random) if company has a specific CompanyAdStrategy.
 
+### struct CompanySlot
+- Contains company and range_min & range_max.
+- Created temporarily to add a company with range to select a company randomly with with company balance taken into account. The greater ad_balance a compy has, the greater chance the company is to get randomly chosen in the CompanySelector. 
+
+### struct CompanySelector
+- Contains array of CompanySlot, num_companies and total_balance to make weighted selection possible from the CompanySlot ranges.
+
 
 
 
