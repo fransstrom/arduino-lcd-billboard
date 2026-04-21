@@ -38,10 +38,10 @@ void billboard_prep(struct Billboard *billboard) {
       company_create("Frans Reklam AB", 1000, RANDOM);
   frans_billboards->company_type = OWNER;
   struct Company *sverte_petter =
-      company_create("Svartepetters AB", 900, TIME_BASED);
-  struct Company *ankan = company_create("Ankas pajer AB", 200, RANDOM);
-  struct Company *harry = company_create("Hederlige Harry", 500, RANDOM);
-  struct Company *goofy = company_create("Detective Goofy", 250, RANDOM);
+      company_create("Svartepetters AB", 1500, TIME_BASED);
+  struct Company *ankan = company_create("Ankas pajer AB", 3000, RANDOM);
+  struct Company *harry = company_create("Hederlige Harry", 5000, RANDOM);
+  struct Company *goofy = company_create("Detective Goofy", 4000, RANDOM);
 
   // Allocating memory for ads in company_add_ad since Ad is never used outside
   // of company context.
